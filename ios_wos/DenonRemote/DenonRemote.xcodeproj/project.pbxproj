@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA09183E292AD6D80088570D /* WatchConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA620BCE2929CA590066386D /* WatchConnect.swift */; };
 		FA1CC4792929C35000389BC4 /* Comm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1CC4782929C35000389BC4 /* Comm.swift */; };
 		FA620BBB2929C74B0066386D /* DenonRemoteWApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA620BBA2929C74B0066386D /* DenonRemoteWApp.swift */; };
 		FA620BBD2929C74B0066386D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA620BBC2929C74B0066386D /* ContentView.swift */; };
@@ -16,7 +17,6 @@
 		FA620BCB2929C8580066386D /* PhoneConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA620BCA2929C8580066386D /* PhoneConnect.swift */; };
 		FA620BCC2929C97A0066386D /* Comm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1CC4782929C35000389BC4 /* Comm.swift */; };
 		FA620BCF2929CA590066386D /* WatchConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA620BCE2929CA590066386D /* WatchConnect.swift */; };
-		FA620BD02929CA590066386D /* WatchConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA620BCE2929CA590066386D /* WatchConnect.swift */; };
 		FAE8E3772929BD0E004DE612 /* DenonRemoteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8E3762929BD0E004DE612 /* DenonRemoteApp.swift */; };
 		FAE8E3792929BD0E004DE612 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8E3782929BD0E004DE612 /* ContentView.swift */; };
 		FAE8E37B2929BD0F004DE612 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAE8E37A2929BD0F004DE612 /* Assets.xcassets */; };
@@ -365,7 +365,7 @@
 				FA620BCC2929C97A0066386D /* Comm.swift in Sources */,
 				FA620BBD2929C74B0066386D /* ContentView.swift in Sources */,
 				FA620BBB2929C74B0066386D /* DenonRemoteWApp.swift in Sources */,
-				FA620BD02929CA590066386D /* WatchConnect.swift in Sources */,
+				FA09183E292AD6D80088570D /* WatchConnect.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
