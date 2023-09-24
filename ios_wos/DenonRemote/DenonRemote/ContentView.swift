@@ -18,6 +18,8 @@ struct ContentView: View {
     @ObservedObject var watchSession = PhoneWatchConnect()
     @State var watchConnected: Bool = false
     @State var messageText = "_SND_"
+    
+    @State private var autoPwrOffEngaged: Bool = false
 
     var body: some View {
         
@@ -53,12 +55,32 @@ struct ContentView: View {
                     }
                 })
                 
-                Button(action: {
-                                self.watchSession.session.sendMessage(["message" : self.messageText], replyHandler: nil) { (error) in
-                                    print(error.localizedDescription)
-                                }
-                            }) {Text("Send Message")}
-                Text(self.watchSession.messageText)
+//                Button(action: {
+//                                self.watchSession.session.sendMessage(["message" : self.messageText], replyHandler: nil) { (error) in
+//                                    print(error.localizedDescription)
+//                                }
+//                            }) {Text("Send Message")}
+//                Text(self.watchSession.messageText)
+                
+                Toggle("Auto power OFF", isOn: $autoPwrOffEngaged)
+                    .toggleStyle(.button)
+                    .tint(.mint)
+                    .onChange(of: autoPwrOffEngaged) {newPwrOffEngState in
+                        if (newPwrOffEngState == false) {
+                            denonState = sendCommand(cmd: "CMD41AUTOPWROFF0", rxTO: 1)
+                        } else {
+                            denonState = sendCommand(cmd: "CMD41AUTOPWROFF1", rxTO: 1)
+                        }
+                    }
+                
+                if (autoPwrOffEngaged) {
+                    Label("ON", systemImage: "power")
+                        .foregroundColor(.red)
+                    //denonState = sendCommand(cmd: "CMD04POWERON", rxTO: 1)
+                } else {
+                    Label("OFF", systemImage: "power")
+                        .foregroundColor(.gray)
+                }
             }
             
             //Divider()
