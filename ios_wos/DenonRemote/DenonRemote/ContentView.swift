@@ -39,12 +39,14 @@ struct ContentView: View {
                     .onAppear(perform: {
                         denonState = sendCommand(cmd: "CMD98GET_STATE", rxTO: 1)
                         volumeString = denonState.volume
+                        autoPwrOffEngaged = denonState.autoPwrOffEnable
                         print("DEBUG: updating volume text: \(volumeString)")
                     })
                     // Update the state when back from background
                     .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification), perform: { _ in
                         denonState = sendCommand(cmd: "CMD98GET_STATE", rxTO: 1)
                         volumeString = denonState.volume
+                        autoPwrOffEngaged = denonState.autoPwrOffEnable
                     })
                                 
                 Button(action: {watchConnected = self.watchSession.session.isReachable; print("DBG: watchConnected=\(watchConnected)")}, label: {
@@ -85,15 +87,16 @@ struct ContentView: View {
             
             //Divider()
             
+            //TODO: make automatic update all variable fields values when receiving state
             HStack {
-                Button(action: {denonState = sendCommand(cmd: "CMD04POWERON", rxTO: 1)}, label: {
+                Button(action: {denonState = sendCommand(cmd: "CMD04POWERON", rxTO: 1); autoPwrOffEngaged = denonState.autoPwrOffEnable}, label: {
                         if Int(denonState.power) == 1 {
                             Text("Power ON").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).foregroundColor(.green).glow(color: .green, radius: 48).padding()
                         } else {
                             Text("Power ON").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).foregroundColor(.gray).padding()
                         }
                 })
-                Button(action: {denonState = sendCommand(cmd: "CMD05POWEROFF", rxTO: 1)}, label: {
+                Button(action: {denonState = sendCommand(cmd: "CMD05POWEROFF", rxTO: 1); autoPwrOffEngaged = denonState.autoPwrOffEnable}, label: {
                         if Int(denonState.power) == 1 {
                             Text("Power OFF").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).foregroundColor(.gray).padding()
                         } else {
@@ -105,6 +108,7 @@ struct ContentView: View {
                 Button(action: {
                     denonState = sendCommand(cmd: "CMD03VOLUMEDOWN", rxTO: 1);//CMD19DECREASEVOL03
                     volumeString = denonState.volume
+                    autoPwrOffEngaged = denonState.autoPwrOffEnable
                 }, label: {
                     Text("-1").fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).foregroundColor(.red)
                         .padding()
@@ -115,6 +119,7 @@ struct ContentView: View {
                 
                 Button(action: {
                     denonState = sendCommand(cmd: "CMD19DECREASEVOL03", rxTO: 2);
+                    autoPwrOffEngaged = denonState.autoPwrOffEnable
                     volumeString = denonState.volume}, label: {
                     HStack {
                         Text("Down").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
@@ -128,6 +133,7 @@ struct ContentView: View {
 
                 Button(action: {
                     denonState = sendCommand(cmd: "CMD18INCREASEVOL03", rxTO: 2);
+                    autoPwrOffEngaged = denonState.autoPwrOffEnable
                     volumeString = denonState.volume}, label: {
                     HStack {
                         Image(systemName: "arrowtriangle.up.fill").foregroundColor(.orange).font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
@@ -141,6 +147,7 @@ struct ContentView: View {
                 
                 Button(action: {
                     denonState = sendCommand(cmd: "CMD02VOLUMEUP__", rxTO: 1);//CMD18INCREASEVOL03
+                    autoPwrOffEngaged = denonState.autoPwrOffEnable
                     volumeString = denonState.volume
                 }, label: {
                     Text("+1").fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).foregroundColor(.white)
@@ -155,6 +162,7 @@ struct ContentView: View {
                 Button(action: {
                     denonState = sendCommand(cmd: "CMD19DECREASEVOL10", rxTO: 5);
                     volumeString = denonState.volume
+                    autoPwrOffEngaged = denonState.autoPwrOffEnable
                 }, label: {
                     Text("Quiet -10").fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).foregroundColor(.red)
                         .padding()
@@ -166,6 +174,7 @@ struct ContentView: View {
                 Button(action: {
                     denonState = sendCommand(cmd: "CMD18INCREASEVOL10", rxTO: 5);
                     volumeString = denonState.volume
+                    autoPwrOffEngaged = denonState.autoPwrOffEnable
                 }, label: {
                     Text("Loud +10").fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).foregroundColor(.white)
                         .padding()
@@ -179,28 +188,28 @@ struct ContentView: View {
             //Text(" ").font(.body)
             Text("-= Stereo Settings =-").foregroundColor(.black)
             HStack {
-                Button(action: {denonState = sendCommand(cmd: "CMD09STANDARD", rxTO: 1)}, label: {
+                Button(action: {denonState = sendCommand(cmd: "CMD09STANDARD", rxTO: 1); autoPwrOffEngaged = denonState.autoPwrOffEnable}, label: {
                     if Int(denonState.stereoMode) == 2 && Int(denonState.power) == 1 {
                         Text("STANDARD").fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).foregroundColor(.red).glow(color: .red, radius: 24)
                     } else {
                         Text("STANDARD").fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).foregroundColor(.red)
                     }
                 })
-                Button(action: {denonState = sendCommand(cmd: "CMD12DIRECT", rxTO: 1)}, label: {
+                Button(action: {denonState = sendCommand(cmd: "CMD12DIRECT", rxTO: 1); autoPwrOffEngaged = denonState.autoPwrOffEnable}, label: {
                     if Int(denonState.stereoMode) == 5 && Int(denonState.power) == 1 {
                         Text("DIRECT").fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).foregroundColor(.green).glow(color: .green, radius: 24)
                     } else {
                         Text("DIRECT").fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).foregroundColor(.green)
                     }
                 })
-                Button(action: {denonState = sendCommand(cmd: "CMD13STEREO", rxTO: 1)}, label: {
+                Button(action: {denonState = sendCommand(cmd: "CMD13STEREO", rxTO: 1); autoPwrOffEngaged = denonState.autoPwrOffEnable}, label: {
                     if Int(denonState.stereoMode) == 6 && Int(denonState.power) == 1 {
                         Text("STEREO").fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).foregroundColor(.blue).glow(color: .blue, radius: 24)
                     } else {
                         Text("STEREO").fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).foregroundColor(.blue)
                     }
                 })
-                Button(action: {denonState = sendCommand(cmd: "CMD075CH7CHSTEREO", rxTO: 1)}, label: {
+                Button(action: {denonState = sendCommand(cmd: "CMD075CH7CHSTEREO", rxTO: 1); autoPwrOffEngaged = denonState.autoPwrOffEnable}, label: {
                     if Int(denonState.stereoMode) == 0 && Int(denonState.power) == 1 {
                         Text("5ch/7ch").fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).foregroundColor(.purple).glow(color: .purple, radius: 24)
                     } else {
@@ -217,6 +226,7 @@ struct ContentView: View {
                 } else {
                     muteSpeakerImg = "speaker.slash"
                 }
+                autoPwrOffEngaged = denonState.autoPwrOffEnable
             }, label: {
                 HStack {
                     Text("Mute").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
@@ -235,9 +245,10 @@ struct ContentView: View {
             //Spacer()
             HStack {
                 Button(action: {_ = sendCommand(cmd: "CMD01DIMMER", rxTO: 1)
-                                dimmerImage += 1
-                                imageIndex = dimmerImage % 4
-                                print("dimmerImage=\(dimmerImage), imageIndex=\(imageIndex)")
+                    dimmerImage += 1
+                    imageIndex = dimmerImage % 4
+                    print("dimmerImage=\(dimmerImage), imageIndex=\(imageIndex)")
+                    autoPwrOffEngaged = denonState.autoPwrOffEnable
                 }) {
                     HStack {
                         switch imageIndex {
@@ -261,7 +272,7 @@ struct ContentView: View {
                     .cornerRadius(40)
                 }
                 
-                Button(action: {denonState = sendCommand(cmd: "CMD99CALIBRATE_VOL", rxTO: 25); volumeString = denonState.volume}) {
+                Button(action: {denonState = sendCommand(cmd: "CMD99CALIBRATE_VOL", rxTO: 25); volumeString = denonState.volume; autoPwrOffEngaged = denonState.autoPwrOffEnable}) {
                     Image(systemName: "gearshape").foregroundColor(.red).font(Font.title.weight(.light)).padding()
                 }.cornerRadius(40)
             }

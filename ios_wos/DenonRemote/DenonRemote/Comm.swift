@@ -33,12 +33,13 @@ class AsyncOperation {
 let asyncOperation = AsyncOperation(numberOfSimultaneousActions: 1, dispatchQueueLabel: "AnyString")
 
 struct MEM_STATE_T {
-    var power:      String = "0"
-    var volume:     String = "---"
-    var mute:       String = "0"
-    var stereoMode: String = "0"
-    var input:      String = "0"
-    var dimmer:     String = "0"
+    var power:              String = "0"
+    var volume:             String = "---"
+    var mute:               String = "0"
+    var stereoMode:         String = "0"
+    var input:              String = "0"
+    var dimmer:             String = "0"
+    var autoPwrOffEnable:   Bool = false
 }
 
 func htons(value: CUnsignedShort) -> CUnsignedShort {
@@ -143,7 +144,8 @@ func deserializeDenonState(ds_string: String) -> MEM_STATE_T {
     denonState.stereoMode = stringSlicer(inputStr: ds_string, startIdx: 8, sliceLen: 1)
     denonState.input = stringSlicer(inputStr: ds_string, startIdx: 10, sliceLen: 1)
     denonState.dimmer = stringSlicer(inputStr: ds_string, startIdx: 12, sliceLen: 1)
-    print("\(getTimeStamp()) power: \(denonState.power), volume: \(denonState.volume), mute: \(denonState.mute), stereoMode: \(denonState.stereoMode), input: \(denonState.input), dimmer: \(denonState.dimmer)")
+    denonState.autoPwrOffEnable = stringSlicer(inputStr: ds_string, startIdx: 14, sliceLen: 1) == "1" ? true : false
+    print("\(getTimeStamp()) power: \(denonState.power), volume: \(denonState.volume), mute: \(denonState.mute), stereoMode: \(denonState.stereoMode), input: \(denonState.input), dimmer: \(denonState.dimmer), autoPwrOffEnable: \(denonState.autoPwrOffEnable)")
     return denonState
 }
 
